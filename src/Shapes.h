@@ -1,40 +1,41 @@
 #pragma once
 #include <array>
 
+#include "Vec.h"
+
+
 class Shape
 {
 public:
 	virtual void draw() const = 0;
 
 	void setColor(float red, float green, float blue);
-	void setPosition(float x, float y);
-	void moveBy(float by_x, float by_y);
+	void setPosition(const Vec2f& position);
+	void moveBy(const Vec2f& move_vec);
 protected:
 	std::array<float, 3> m_color = { 1.0f, 1.0f, 1.0f };
-	float m_posX{};
-	float m_posY{};
+	Vec2f m_position;
 };
 
 class Rect : public Shape 
 {
 public:
-	Rect(float width, float height);
+	Rect(const Vec2f& size);
 	void draw() const override;
 protected:
-	float m_width{};
-	float m_height{};
+	Vec2f m_size{};
 };
 
 class Square final : public Rect 
 {
 public:
-	Square(float side) : Rect(side, side) {}
+	Square(float side) : Rect({ side, side }) {}
 };
 
 class Ellipse : public Rect
 {
 public:
-	Ellipse(float width, float height, size_t num_segments = 24);
+	Ellipse(const Vec2f& size, size_t num_segments = 24);
 	void draw() const override;
 
 	void setSegments(size_t segments);
@@ -47,5 +48,5 @@ protected:
 class Circle final : public Ellipse
 {
 public:
-	Circle(float radius, size_t segments = 24) : Ellipse(radius, radius, segments) {}
+	Circle(float radius, size_t segments = 24) : Ellipse({ radius, radius }, segments) {}
 };

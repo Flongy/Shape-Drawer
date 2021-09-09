@@ -11,33 +11,31 @@ void Shape::setColor(float red, float green, float blue) {
 	m_color = { red, green, blue };
 }
 
-void Shape::setPosition(float x, float y) {
-	m_posX = x;
-	m_posY = y;
+void Shape::setPosition(const Vec2f& position) {
+	m_position = position;
 }
 
-void Shape::moveBy(float by_x, float by_y) {
-	m_posX += by_x;
-	m_posY += by_y;
+void Shape::moveBy(const Vec2f& move_vec) {
+	m_position += move_vec;
 }
 
 // Rectangle implementation
-Rect::Rect(float width, float height) : m_width(width), m_height(height) {}
+Rect::Rect(const Vec2f& size) : m_size(size) {}
 
 void Rect::draw() const {
 	glBegin(GL_QUADS);
 	glColor3fv(m_color.data());
 
-	glVertex2f(m_posX,				m_posY);
-	glVertex2f(m_posX + m_width,	m_posY);
-	glVertex2f(m_posX + m_width,	m_posY + m_height);
-	glVertex2f(m_posX,				m_posY + m_height);
+	glVertex2f(m_position.x,			m_position.y);
+	glVertex2f(m_position.x + m_size.x,	m_position.y);
+	glVertex2f(m_position.x + m_size.x,	m_position.y + m_size.y);
+	glVertex2f(m_position.x,			m_position.y + m_size.y);
 
 	glEnd();
 }
 
 // Ellipse implementation
-Ellipse::Ellipse(float width, float height, size_t segments) : Rect(width, height) {
+Ellipse::Ellipse(const Vec2f& size, size_t segments) : Rect(size) {
 	setSegments(segments);
 }
 
@@ -61,7 +59,7 @@ void Ellipse::draw() const {
 	glColor3fv(m_color.data());
 
 	for (int i = 0; i < m_segments; ++i) {
-		glVertex2f(x * m_width + m_posX, y * m_height + m_posY);
+		glVertex2f(x * m_size.x + m_position.x, y * m_size.y + m_position.y);
 
 		last_x = x;
 		x = m_cosTheta * x - m_sinTheta * y;
