@@ -7,17 +7,26 @@
 #include "Shapes.h"
 
 
-constexpr uint32_t INITIAL_WIDTH = 640;
-constexpr uint32_t INITIAL_HEIGHT = 480;
+constexpr uint32_t INITIAL_WIDTH = 1280;
+constexpr uint32_t INITIAL_HEIGHT = 720;
+
+
+void setProjMatrix(double width, double height) {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+}
 
 
 int main(void)
 {
 	GLFWwindow* window;
-	if (!glfwInit())
+	if (glfwInit() == GLFW_FALSE)
 		return -1;
 
-	window = glfwCreateWindow(640, 480, "Shape-Drawer", NULL, NULL);
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+	window = glfwCreateWindow(INITIAL_WIDTH, INITIAL_HEIGHT, "Shape-Drawer", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Could not create a window\n";
@@ -25,24 +34,9 @@ int main(void)
 		return -1;
 	}
 
-	// Window resizing
-	glfwSetWindowSizeCallback(window, [](GLFWwindow* win, int width, int height) {
-		glPushMatrix();
-		glOrtho(0.0, static_cast<double>(width), 0.0, static_cast<double>(height), -1.0, 1.0);
-		glPopMatrix();
-	});
-
 	glfwMakeContextCurrent(window);
 
-	glOrtho
-	(
-		0.0, 
-		static_cast<double>(INITIAL_WIDTH), 
-		0.0, 
-		static_cast<double>(INITIAL_HEIGHT), 
-		-1.0, 
-		1.0
-	);
+	setProjMatrix(INITIAL_WIDTH, INITIAL_HEIGHT);
 
 	Rect r1({ 20.0f, 20.0f });
 	r1.setColor(1.0f, 0.0f, 0.0f);
