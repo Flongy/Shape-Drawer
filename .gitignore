@@ -1,0 +1,10 @@
+/.vs/
+/bin/
+/bin-int/
+
+*.vcxproj*
+*.sln
+
+graph_info.json
+conan*
+!conanfile.txt
