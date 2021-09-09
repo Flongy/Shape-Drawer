@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <array>
 
 #include "Vec.h"
@@ -49,4 +50,20 @@ class Circle final : public Ellipse
 {
 public:
 	Circle(float radius, size_t segments = 24) : Ellipse({ radius, radius }, segments) {}
+};
+
+class Polygon : public Shape
+{
+public:
+	Polygon(std::vector<Vec2f> points);
+	void draw() const override;
+
+protected:
+	std::vector<Vec2f> m_points;
+};
+
+class Triangle final : public Polygon
+{
+public:
+	Triangle(std::array<Vec2f, 3> points) : Polygon({ points.begin(), points.end() }) {}
 };

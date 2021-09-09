@@ -38,7 +38,7 @@ int main(void)
 
 	setProjMatrix(INITIAL_WIDTH, INITIAL_HEIGHT);
 
-	Rect r1({ 20.0f, 20.0f });
+	Rect r1({ 70.0f, 120.0f });
 	r1.setColor(1.0f, 0.0f, 0.0f);
 	r1.setPosition({ 350.0f, 350.0f });
 
@@ -58,12 +58,53 @@ int main(void)
 	circle.setColor(1.0f, 0.0f, 1.0f);
 	circle.setPosition({300.0f, 160.0f});
 
+	Polygon poly(
+	{
+		{0.0f, 0.0f},
+		{30.0f, 20.0f},
+		{20.0f, 60.0f},
+		{-20.0f, 60.0f},
+		{-30.0f, 20.0f},
+	});
+	poly.setPosition({ 200.0f, 200.0f });
+
+	Triangle tri1(
+		{
+			Vec2f{0.0f, 0.0f},
+			Vec2f{120.0f, 0.0f},
+			Vec2f{120.0f, 90.0f},
+		}
+	);
+	tri1.setPosition({ 600.0f, 300.0f });
+
+	Triangle tri2(
+		{
+			Vec2f{0.0f, 0.0f},
+			Vec2f{50.0f, 90.0f},
+			Vec2f{-50.0f, 90.0f},
+		}
+	);
+	tri2.setPosition({ 800.0f, 300.0f });
+
+	Triangle tri3(
+		{
+			Vec2f{0.0f, 0.0f},
+			Vec2f{60.0f, 90.0f},
+			Vec2f{150.0f, 90.0f},
+		}
+	);
+	tri3.setPosition({ 850.0f, 300.0f });
+
 	std::vector<Shape*> shapes{
 		&r1,
 		&r2,
 		&s1,
 		&el,
-		&circle
+		&circle,
+		&poly,
+		&tri1,
+		&tri2,
+		&tri3,
 	};
 
 	while (!glfwWindowShouldClose(window))

@@ -68,3 +68,17 @@ void Ellipse::draw() const {
 
 	glEnd();
 }
+
+// Polygon implementation
+Polygon::Polygon(std::vector<Vec2f> points) : m_points(std::move(points)) {}
+
+void Polygon::draw() const {
+	glBegin(GL_TRIANGLE_FAN);
+	glColor3fv(m_color.data());
+
+	for (auto& point : m_points) {
+		glVertex2f(m_position.x + point.x, m_position.y + point.y);
+	}
+
+	glEnd();
+}
