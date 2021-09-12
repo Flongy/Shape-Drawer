@@ -33,17 +33,18 @@ public:
 	Square(float side) : Rect({ side, side }) {}
 };
 
-class Ellipse : public Rect
+class Ellipse : public Shape
 {
 public:
 	Ellipse(const Vec2f& size, size_t num_segments = 24);
 	void draw() const override;
 
-	void setSegments(size_t segments);
+	void setSegments(size_t num_segments);
 protected:
-	size_t m_segments;
-	float m_cosTheta;
-	float m_sinTheta;
+	Vec2f m_axes;			// { vertical semi-axis, horizontal semi-axis }
+	size_t m_num_segments;
+	float m_cos_theta;
+	float m_sin_theta;
 };
 
 class Circle final : public Ellipse

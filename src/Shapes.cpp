@@ -35,16 +35,16 @@ void Rect::draw() const {
 }
 
 // Ellipse implementation
-Ellipse::Ellipse(const Vec2f& size, size_t segments) : Rect(size) {
-	setSegments(segments);
+Ellipse::Ellipse(const Vec2f& axes, size_t num_segments) : m_axes(axes) {
+	setSegments(num_segments);
 }
 
-void Ellipse::setSegments(size_t segments) {
-	m_segments = segments;
+void Ellipse::setSegments(size_t num_segments) {
+	m_num_segments = num_segments;
 
-	const float theta_by_segments = THETA / m_segments;
-	m_cosTheta = cosf(theta_by_segments);
-	m_sinTheta = sinf(theta_by_segments);
+	const float theta_by_segments = THETA / m_num_segments;
+	m_cos_theta = cosf(theta_by_segments);
+	m_sin_theta = sinf(theta_by_segments);
 }
 
 void Ellipse::draw() const {
@@ -58,12 +58,12 @@ void Ellipse::draw() const {
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3fv(m_color.data());
 
-	for (int i = 0; i < m_segments; ++i) {
-		glVertex2f(x * m_size.x + m_position.x, y * m_size.y + m_position.y);
+	for (int i = 0; i < m_num_segments; ++i) {
+		glVertex2f(x * m_axes.x + m_position.x, y * m_axes.y + m_position.y);
 
 		last_x = x;
-		x = m_cosTheta * x - m_sinTheta * y;
-		y = m_sinTheta * last_x + m_cosTheta * y;
+		x = m_cos_theta * x - m_sin_theta * y;
+		y = m_sin_theta * last_x + m_cos_theta * y;
 	}
 
 	glEnd();
