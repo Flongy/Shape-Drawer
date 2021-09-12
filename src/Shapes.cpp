@@ -11,11 +11,11 @@ void Shape::setColor(float red, float green, float blue) {
 	m_color = { red, green, blue };
 }
 
-void Shape::setPosition(const Vec2f& position) {
+void Shape::setPosition(Vec2f position) {
 	m_position = position;
 }
 
-void Shape::moveBy(const Vec2f& move_vec) {
+void Shape::moveBy(Vec2f move_vec) {
 	m_position += move_vec;
 }
 
@@ -23,11 +23,11 @@ void Shape::setRotation(float angle_degrees) {
 	m_rotation = angle_degrees;
 }
 
-const Color& Shape::getColor() const {
+Color Shape::getColor() const {
 	return m_color;
 }
 
-const Vec2f& Shape::getPosition() const {
+Vec2f Shape::getPosition() const {
 	return m_position;
 }
 
@@ -36,7 +36,7 @@ float Shape::getRotation() const {
 }
 
 // Rectangle implementation
-Rect::Rect(const Vec2f& size) : m_size(size) {}
+Rect::Rect(Vec2f size) : m_size(size) {}
 
 void Rect::draw() const {
 	glMatrixMode(GL_MODELVIEW);
@@ -55,16 +55,16 @@ void Rect::draw() const {
 	glEnd();
 }
 
-void Rect::setSize(const Vec2f& size) {
+void Rect::setSize(Vec2f size) {
 	m_size = size;
 }
 
-const Vec2f& Rect::getSize() const {
+Vec2f Rect::getSize() const {
 	return m_size;
 }
 
 // Ellipse implementation
-Ellipse::Ellipse(const Vec2f& axes, size_t num_segments) : m_axes(axes) {
+Ellipse::Ellipse(Vec2f axes, size_t num_segments) : m_axes(axes) {
 	setNumSegments(num_segments);
 }
 
@@ -94,7 +94,7 @@ void Ellipse::draw() const {
 	glEnd();
 }
 
-void Ellipse::setAxes(const Vec2f& axes) {
+void Ellipse::setAxes(Vec2f axes) {
 	m_axes = axes;
 }
 
@@ -106,7 +106,7 @@ void Ellipse::setNumSegments(size_t num_segments) {
 	m_sin_theta = sinf(theta_by_segments);
 }
 
-const Vec2f& Ellipse::getAxes() const {
+Vec2f Ellipse::getAxes() const {
 	return m_axes;
 }
 

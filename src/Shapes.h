@@ -19,12 +19,12 @@ public:
 	virtual void draw() const = 0;
 
 	void setColor(float red, float green, float blue);
-	void setPosition(const Vec2f& position);
-	void moveBy(const Vec2f& move_vec);
+	void setPosition(Vec2f position);
+	void moveBy(Vec2f move_vec);
 	void setRotation(float angle_degrees);
 
-	const Color& getColor() const;
-	const Vec2f& getPosition() const;
+	Color getColor() const;
+	Vec2f getPosition() const;
 	float getRotation() const;
 protected:
 	Color m_color = { 1.0f, 1.0f, 1.0f };
@@ -35,11 +35,11 @@ protected:
 class Rect : public Shape 
 {
 public:
-	Rect(const Vec2f& size = { 50.0f, 20.0f });
+	Rect(Vec2f size = { 50.0f, 20.0f });
 	void draw() const override;
 
-	void setSize(const Vec2f& size);
-	const Vec2f& getSize() const;
+	void setSize(Vec2f size);
+	Vec2f getSize() const;
 protected:
 	Vec2f m_size;
 };
@@ -56,13 +56,13 @@ public:
 class Ellipse : public Shape
 {
 public:
-	Ellipse(const Vec2f& axes = { 20.0f, 10.0f }, size_t num_segments = 24);
+	Ellipse(Vec2f axes = { 20.0f, 10.0f }, size_t num_segments = 24);
 	void draw() const override;
 
-	void setAxes(const Vec2f& axes);
+	void setAxes(Vec2f axes);
 	void setNumSegments(size_t num_segments);
 
-	const Vec2f& getAxes() const;
+	Vec2f getAxes() const;
 	size_t getNumSegments() const;
 protected:
 	Vec2f m_axes;			// { vertical semi-axis, horizontal semi-axis }
