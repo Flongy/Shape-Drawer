@@ -26,27 +26,54 @@ void Scene::clearScene() {
 /* Scene generators */
 /********************/
 Scene makeTestScene() {
-	auto r1 = std::make_shared<Rect>(Vec2f{ 70.0f, 120.0f });
-	r1->setColor(1.0f, 0.0f, 0.0f);
-	r1->setPosition({ 350.0f, 350.0f });
+	// Default constructed
+	auto rect_default = std::make_shared<Rect>();
+	rect_default->setColor(1.0f, 0.5f, 0.5f);
+	rect_default->setPosition({ 100.0f, 300.0f });
 
-	auto r2 = std::make_shared<Rect>(Vec2f{ 150.0f, 100.0f });
-	r2->setColor(0.0f, 1.0f, 0.0f);
-	r2->setPosition({ 10.0f, 10.0f });
+	auto square_default = std::make_shared<Square>();
+	square_default->setColor(1.0f, 0.5f, 0.5f);
+	square_default->setPosition({ 100.0f, 350.0f });
 
-	auto s1 = std::make_shared<Square>(60.0f);
-	s1->setColor(0.0f, 0.0f, 1.0f);
-	s1->setPosition({ 50.0f, 120.0f });
+	auto ellipse_default = std::make_shared<Ellipse>();
+	ellipse_default->setColor(1.0f, 0.5f, 0.5f);
+	ellipse_default->setPosition({ 100.0f, 400.0f });
 
-	auto el = std::make_shared<Ellipse>(Vec2f{ 80.0f, 50.0f });
-	el->setColor(1.0f, 1.0f, 0.0f);
-	el->setPosition({ 300.0f, 85.0f });
+	auto circle_default = std::make_shared<Circle>();
+	circle_default->setColor(1.0f, 0.5f, 0.5f);
+	circle_default->setPosition({ 100.0f, 450.0f });
 
-	auto circle = std::make_shared<Circle>(60.0f);
-	circle->setColor(1.0f, 0.0f, 1.0f);
-	circle->setPosition({ 300.0f, 160.0f });
+	auto polygon_default = std::make_shared<Polygon>();
+	polygon_default->setColor(1.0f, 0.5f, 0.5f);
+	polygon_default->setPosition({ 100.0f, 500.0f });
 
-	auto poly = std::make_shared<Polygon>(
+	auto triangle_default = std::make_shared<Triangle>();
+	triangle_default->setColor(1.0f, 0.5f, 0.5f);
+	triangle_default->setPosition({ 100.0f, 600.0f });
+
+
+	// Other shapes
+	auto rect1 = std::make_shared<Rect>(Vec2f{ 70.0f, 120.0f });
+	rect1->setColor(1.0f, 0.0f, 0.0f);
+	rect1->setPosition({ 350.0f, 350.0f });
+
+	auto rect2 = std::make_shared<Rect>(Vec2f{ 150.0f, 100.0f });
+	rect2->setColor(0.0f, 1.0f, 0.0f);
+	rect2->setPosition({ 10.0f, 10.0f });
+
+	auto square1 = std::make_shared<Square>(60.0f);
+	square1->setColor(0.0f, 0.0f, 1.0f);
+	square1->setPosition({ 50.0f, 120.0f });
+
+	auto ellipse1 = std::make_shared<Ellipse>(Vec2f{ 80.0f, 50.0f });
+	ellipse1->setColor(1.0f, 1.0f, 0.0f);
+	ellipse1->setPosition({ 300.0f, 85.0f });
+
+	auto circle1 = std::make_shared<Circle>(60.0f);
+	circle1->setColor(1.0f, 0.0f, 1.0f);
+	circle1->setPosition({ 300.0f, 160.0f });
+
+	auto polygon1 = std::make_shared<Polygon>(
 		std::initializer_list
 		{
 			Vec2f{0.0f, 0.0f},
@@ -55,39 +82,46 @@ Scene makeTestScene() {
 			Vec2f{-20.0f, 60.0f},
 			Vec2f{-30.0f, 20.0f} 
 		});
-	poly->setPosition({ 200.0f, 200.0f });
+	polygon1->setPosition({ 200.0f, 200.0f });
 
-	auto tri1 = std::make_shared<Triangle>(
+	auto triangle1 = std::make_shared<Triangle>(
 			Vec2f{0.0f, 0.0f},
 			Vec2f{120.0f, 0.0f},
 			Vec2f{120.0f, 90.0f}
 	);
-	tri1->setPosition({ 600.0f, 300.0f });
+	triangle1->setPosition({ 600.0f, 300.0f });
 
-	auto tri2 = std::make_shared<Triangle>(
+	auto triangle2 = std::make_shared<Triangle>(
 			Vec2f{0.0f, 0.0f},
 			Vec2f{50.0f, 90.0f},
 			Vec2f{-50.0f, 90.0f}
 	);
-	tri2->setPosition({ 800.0f, 300.0f });
+	triangle2->setPosition({ 800.0f, 300.0f });
 
-	auto tri3 = std::make_shared<Triangle>(
+	auto triangle3 = std::make_shared<Triangle>(
 			Vec2f{0.0f, 0.0f},
 			Vec2f{60.0f, 90.0f},
 			Vec2f{150.0f, 90.0f}
 	);
-	tri3->setPosition({ 850.0f, 300.0f });
+	triangle3->setPosition({ 850.0f, 300.0f });
 
 	std::vector<std::shared_ptr<Shape>> shapes{
-		r1,
-		r2,
-		s1,
-		el,
-		circle,
-		poly,
-		tri1,
-		tri2,
-		tri3,
+		rect_default,
+		square_default,
+		ellipse_default,
+		circle_default,
+		polygon_default,
+		triangle_default,
+
+		rect1,
+		rect2,
+		square1,
+		ellipse1,
+		circle1,
+		polygon1,
+		triangle1,
+		triangle2,
+		triangle3,
 	};
 
 	return Scene{ std::move(shapes) };

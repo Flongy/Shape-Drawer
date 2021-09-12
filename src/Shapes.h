@@ -21,22 +21,22 @@ protected:
 class Rect : public Shape 
 {
 public:
-	Rect(const Vec2f& size);
+	Rect(const Vec2f& size = { 50.0f, 20.0f });
 	void draw() const override;
 protected:
-	Vec2f m_size{};
+	Vec2f m_size;
 };
 
 class Square final : public Rect 
 {
 public:
-	Square(float side) : Rect({ side, side }) {}
+	Square(float side = 30.0f) : Rect({ side, side }) {}
 };
 
 class Ellipse : public Shape
 {
 public:
-	Ellipse(const Vec2f& size, size_t num_segments = 24);
+	Ellipse(const Vec2f& axes = { 20.0f, 10.0f }, size_t num_segments = 24);
 	void draw() const override;
 
 	void setSegments(size_t num_segments);
@@ -50,17 +50,24 @@ protected:
 class Circle final : public Ellipse
 {
 public:
-	Circle(float radius, size_t segments = 24) : Ellipse({ radius, radius }, segments) {}
+	Circle(float radius = 30.0f, size_t num_segments = 24) : Ellipse({ radius, radius }, num_segments) {}
 };
 
 class Polygon : public Shape
 {
 public:
+	Polygon() = default;
 	Polygon(std::vector<Vec2f> points);
 	void draw() const override;
 
 protected:
-	std::vector<Vec2f> m_points;
+	std::vector<Vec2f> m_points{
+		{0.0f, 0.0f},
+		{30.0f, 20.0f},
+		{20.0f, 60.0f},
+		{-20.0f, 60.0f},
+		{-30.0f, 20.0f}
+	};
 };
 
 class Triangle final : public Polygon
