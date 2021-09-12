@@ -61,7 +61,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 }
 
 
-int main(void)
+int main()
 {
 	GLFWwindow* window;
 	if (glfwInit() == GLFW_FALSE)
@@ -82,6 +82,7 @@ int main(void)
 
 	constexpr size_t MINIMUM_SHAPE_NUM = 20;
 	constexpr size_t MAXIMUM_SHAPE_NUM = 1'000;
+	constexpr size_t CHANGE_SHAPE_NUM_STEP = 10;
 	int32_t random_scene_each_shape_num = MINIMUM_SHAPE_NUM;
 
 	Scene test_scene = makeTestScene();
@@ -112,7 +113,7 @@ int main(void)
 		}
 
 		if (key_states.increase_shape_num_in_random_scene) {
-			random_scene_each_shape_num += 10;
+			random_scene_each_shape_num += CHANGE_SHAPE_NUM_STEP;
 
 			if (random_scene_each_shape_num > MAXIMUM_SHAPE_NUM) {
 				random_scene_each_shape_num = MAXIMUM_SHAPE_NUM;
@@ -126,7 +127,7 @@ int main(void)
 			key_states.increase_shape_num_in_random_scene = false;
 		}
 		else if (key_states.decrease_shape_num_in_random_scene) {
-			random_scene_each_shape_num -= 10;
+			random_scene_each_shape_num -= CHANGE_SHAPE_NUM_STEP;
 			
 			if (random_scene_each_shape_num < MINIMUM_SHAPE_NUM) {
 				random_scene_each_shape_num = MINIMUM_SHAPE_NUM;

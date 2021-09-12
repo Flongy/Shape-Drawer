@@ -84,14 +84,18 @@ Scene makeTestScene() {
 	circle1->setPosition({ 300.0f, 160.0f });
 
 	auto polygon1 = std::make_shared<Polygon>(
-		std::initializer_list
-		{
-			Vec2f{0.0f, 0.0f},
-			Vec2f{30.0f, 20.0f},
-			Vec2f{20.0f, 60.0f},
-			Vec2f{-20.0f, 60.0f},
-			Vec2f{-30.0f, 20.0f} 
-		});
+		std::move
+		(
+			std::vector
+			{
+				Vec2f{0.0f, 0.0f},
+				Vec2f{30.0f, 20.0f},
+				Vec2f{20.0f, 60.0f},
+				Vec2f{-20.0f, 60.0f},
+				Vec2f{-30.0f, 20.0f} 
+			}
+		)
+	);
 	polygon1->setPosition({ 200.0f, 200.0f });
 
 	auto triangle1 = std::make_shared<Triangle>(
@@ -157,29 +161,32 @@ Scene makeRandomScene(size_t number_of_each_shape, uint32_t screen_width, uint32
 		return Vec2f{ uniform_size_x(engine), uniform_size_y(engine) };
 	};
 
-#define generate(generator) std::generate_n(std::back_inserter(shapes), number_of_each_shape, generator)
+	auto generate_shapes = [number_of_each_shape, &shapes](auto generator) {
+		std::generate_n(std::back_inserter(shapes), number_of_each_shape, generator);
+	};
+
 	/* SHAPE GENERATORS */
 	auto rect_generator = [&]() -> std::shared_ptr<Shape> {
 		auto temp = std::make_shared<Rect>(uniform_size_Vec2f(engine));
 
 		return temp;
 	};
-	generate(rect_generator);
+	generate_shapes(rect_generator);
 
 	auto square_generator = [&]() -> std::shared_ptr<Shape> {
 		return std::make_shared<Square>(uniform_size_y(engine));
 	};
-	generate(square_generator);
+	generate_shapes(square_generator);
 
 	auto ellipse_generator = [&]() -> std::shared_ptr<Shape> {
 		return std::make_shared<Ellipse>(uniform_size_Vec2f(engine) / 2.0f);
 	};
-	generate(ellipse_generator);
+	generate_shapes(ellipse_generator);
 
 	auto circle_generator = [&]() -> std::shared_ptr<Shape> {
 		return std::make_shared<Circle>(uniform_size_y(engine) / 2.0f);
 	};
-	generate(circle_generator);
+	generate_shapes(circle_generator);
 
 	auto uniform_point = [height](auto& engine) {
 		auto dist = std::uniform_real_distribution{ height / -15.0f, height / 15.0f };
@@ -189,13 +196,11 @@ Scene makeRandomScene(size_t number_of_each_shape, uint32_t screen_width, uint32
 	auto polygon_generator = [&]() -> std::shared_ptr<Shape> {
 		std::vector<Vec2f> points(8);
 
-		for (auto& p : points) {
-			p = uniform_point(engine);
-		}
+		std::generate(points.begin(), points.end(), [&]() { return uniform_point(engine); });
 
 		return std::make_shared<Polygon>(std::move(points));
 	};
-	generate(polygon_generator);
+	generate_shapes(polygon_generator);
 
 	auto triangle_generator = [&]() -> std::shared_ptr<Shape> {
 		return std::make_shared<Triangle>(
@@ -204,8 +209,8 @@ Scene makeRandomScene(size_t number_of_each_shape, uint32_t screen_width, uint32
 			uniform_point(engine)
 		);
 	};
-	generate(triangle_generator);
-#undef generate
+	generate_shapes(triangle_generator);
+
 
 	const auto uniform_pos_x = std::uniform_real_distribution{ 0.0f, static_cast<float>(width) };
 	const auto uniform_pos_y = std::uniform_real_distribution{ 0.0f, static_cast<float>(height) };
