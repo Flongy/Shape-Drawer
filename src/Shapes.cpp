@@ -33,7 +33,7 @@ void Rect::draw() const {
 	glRotatef(m_rotation, 0.0f, 0.0f, 1.0f);
 
 	glBegin(GL_QUADS);
-	glColor3fv(m_color.data());
+	glColor3fv(m_color.ptr());
 
 	/*glVertex2f(m_position.x,			m_position.y);
 	glVertex2f(m_position.x + m_size.x,	m_position.y);
@@ -74,7 +74,7 @@ void Ellipse::draw() const {
 	
 
 	glBegin(GL_TRIANGLE_FAN);
-	glColor3fv(m_color.data());
+	glColor3fv(m_color.ptr());
 
 	for (int i = 0; i < m_num_segments; ++i) {
 		glVertex2f(x * m_axes.x, y * m_axes.y);
@@ -97,7 +97,7 @@ void Polygon::draw() const {
 	glRotatef(m_rotation, 0.0f, 0.0f, 1.0f);
 
 	glBegin(GL_TRIANGLE_FAN);
-	glColor3fv(m_color.data());
+	glColor3fv(m_color.ptr());
 
 	for (auto& point : m_points) {
 		glVertex2f(point.x, point.y);
