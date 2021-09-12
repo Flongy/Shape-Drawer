@@ -11,12 +11,41 @@
 constexpr uint32_t INITIAL_WIDTH = 1280;
 constexpr uint32_t INITIAL_HEIGHT = 720;
 
+struct KeyStates {
+	bool switchToTestScene{};
+	bool switchToRandomScene{};
+};
+
 
 void setProjMatrix(double width, double height) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
+}
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	KeyStates* keyStates = (KeyStates*)glfwGetWindowUserPointer(window);
+
+	switch (key)
+	{
+	case GLFW_KEY_1:
+		// Switch to testScene
+		if(action == GLFW_PRESS)
+			keyStates->switchToTestScene = true;
+		return;
+	case GLFW_KEY_2:
+		// Switch to randomScene
+		if (action == GLFW_PRESS || action == GLFW_REPEAT)
+			keyStates->switchToRandomScene = true;
+		return;
+	case GLFW_KEY_ESCAPE:
+		// Close application on pressing ESCAPE button
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+		return;
+	default:
+		return;
+	}
 }
 
 
@@ -43,6 +72,11 @@ int main(void)
 	Scene randomScene = makeRandomScene(20, INITIAL_WIDTH, INITIAL_HEIGHT);
 	Scene* currentScenePtr = &testScene;
 
+	KeyStates keyStates{};
+	glfwSetWindowUserPointer(window, &keyStates);
+
+	glfwSetKeyCallback(window, keyCallback);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		/* RENDER BEGIN */
@@ -51,18 +85,14 @@ int main(void)
 		currentScenePtr->drawScene();
 		/* RENDER END */
 
-		// Change the current scene with number keys
-		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+		if (keyStates.switchToTestScene) {
 			currentScenePtr = &testScene;
+			keyStates.switchToTestScene = false;
 		}
-		else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+		else if (keyStates.switchToRandomScene) {
 			randomScene = makeRandomScene(20, INITIAL_WIDTH, INITIAL_HEIGHT);
 			currentScenePtr = &randomScene;
-		}
-
-		// Close application on pressing ESCAPE button
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
+			keyStates.switchToRandomScene = false;
 		}
 
 		glfwSwapBuffers(window);
