@@ -14,6 +14,8 @@ constexpr uint32_t INITIAL_HEIGHT = 720;
 struct KeyStates {
 	bool switchToTestScene{};
 	bool switchToRandomScene{};
+	bool increseShapeNumInRandomScene{};
+	bool decreseShapeNumInRandomScene{};
 };
 
 
@@ -38,6 +40,16 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		// Switch to randomScene
 		if (action == GLFW_PRESS || action == GLFW_REPEAT)
 			keyStates->switchToRandomScene = true;
+		return;
+	case GLFW_KEY_EQUAL:
+	case GLFW_KEY_KP_ADD:
+		if (action == GLFW_PRESS || action == GLFW_REPEAT)
+			keyStates->increseShapeNumInRandomScene = true;
+		return;
+	case GLFW_KEY_MINUS:
+	case GLFW_KEY_KP_SUBTRACT:
+		if (action == GLFW_PRESS || action == GLFW_REPEAT)
+			keyStates->decreseShapeNumInRandomScene = true;
 		return;
 	case GLFW_KEY_ESCAPE:
 		// Close application on pressing ESCAPE button
@@ -68,8 +80,12 @@ int main(void)
 
 	setProjMatrix(INITIAL_WIDTH, INITIAL_HEIGHT);
 
+	constexpr size_t MINIMUM_SHAPE_NUM = 20;
+	constexpr size_t MAXIMUM_SHAPE_NUM = 1'000;
+	int32_t randomSceneEachShapeNum = MINIMUM_SHAPE_NUM;
+
 	Scene testScene = makeTestScene();
-	Scene randomScene = makeRandomScene(20, INITIAL_WIDTH, INITIAL_HEIGHT);
+	Scene randomScene = makeRandomScene(randomSceneEachShapeNum, INITIAL_WIDTH, INITIAL_HEIGHT);
 	Scene* currentScenePtr = &testScene;
 
 	KeyStates keyStates{};
@@ -90,9 +106,38 @@ int main(void)
 			keyStates.switchToTestScene = false;
 		}
 		else if (keyStates.switchToRandomScene) {
-			randomScene = makeRandomScene(20, INITIAL_WIDTH, INITIAL_HEIGHT);
+			randomScene = makeRandomScene(randomSceneEachShapeNum, INITIAL_WIDTH, INITIAL_HEIGHT);
 			currentScenePtr = &randomScene;
 			keyStates.switchToRandomScene = false;
+		}
+
+		if (keyStates.increseShapeNumInRandomScene) {
+			randomSceneEachShapeNum += 10;
+
+			if (randomSceneEachShapeNum > MAXIMUM_SHAPE_NUM) {
+				randomSceneEachShapeNum = MAXIMUM_SHAPE_NUM;
+			} 
+			else if (currentScenePtr == &randomScene) {
+				// if the random scene is currently selected - reinitialize it
+				// otherwise - postpone creating until scene is requested
+				randomScene = makeRandomScene(randomSceneEachShapeNum, INITIAL_WIDTH, INITIAL_HEIGHT);
+			}
+
+			keyStates.increseShapeNumInRandomScene = false;
+		}
+		else if (keyStates.decreseShapeNumInRandomScene) {
+			randomSceneEachShapeNum -= 10;
+			
+			if (randomSceneEachShapeNum < MINIMUM_SHAPE_NUM) {
+				randomSceneEachShapeNum = MINIMUM_SHAPE_NUM;
+			} 
+			else if (currentScenePtr == &randomScene) {
+				// if the random scene is currently selected - reinitialize it
+				// otherwise - postpone creating until scene is requested
+				randomScene = makeRandomScene(randomSceneEachShapeNum, INITIAL_WIDTH, INITIAL_HEIGHT);
+			}
+
+			keyStates.decreseShapeNumInRandomScene = false;
 		}
 
 		glfwSwapBuffers(window);
