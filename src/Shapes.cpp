@@ -23,6 +23,18 @@ void Shape::setRotation(float angle_degrees) {
 	m_rotation = angle_degrees;
 }
 
+const Color& Shape::getColor() const {
+	return m_color;
+}
+
+const Vec2f& Shape::getPosition() const {
+	return m_position;
+}
+
+float Shape::getRotation() const {
+	return m_rotation;
+}
+
 // Rectangle implementation
 Rect::Rect(const Vec2f& size) : m_size(size) {}
 
@@ -35,11 +47,6 @@ void Rect::draw() const {
 	glBegin(GL_QUADS);
 	glColor3fv(m_color.ptr());
 
-	/*glVertex2f(m_position.x,			m_position.y);
-	glVertex2f(m_position.x + m_size.x,	m_position.y);
-	glVertex2f(m_position.x + m_size.x,	m_position.y + m_size.y);
-	glVertex2f(m_position.x,			m_position.y + m_size.y);*/
-
 	glVertex2f(0.0f, 0.0f);
 	glVertex2f(m_size.x, 0.0f);
 	glVertex2f(m_size.x, m_size.y);
@@ -48,17 +55,17 @@ void Rect::draw() const {
 	glEnd();
 }
 
-// Ellipse implementation
-Ellipse::Ellipse(const Vec2f& axes, size_t num_segments) : m_axes(axes) {
-	setSegments(num_segments);
+void Rect::setSize(const Vec2f& size) {
+	m_size = size;
 }
 
-void Ellipse::setSegments(size_t num_segments) {
-	m_num_segments = num_segments;
+const Vec2f& Rect::getSize() const {
+	return m_size;
+}
 
-	const float theta_by_segments = THETA / m_num_segments;
-	m_cos_theta = cosf(theta_by_segments);
-	m_sin_theta = sinf(theta_by_segments);
+// Ellipse implementation
+Ellipse::Ellipse(const Vec2f& axes, size_t num_segments) : m_axes(axes) {
+	setNumSegments(num_segments);
 }
 
 void Ellipse::draw() const {
@@ -87,6 +94,26 @@ void Ellipse::draw() const {
 	glEnd();
 }
 
+void Ellipse::setAxes(const Vec2f& axes) {
+	m_axes = axes;
+}
+
+void Ellipse::setNumSegments(size_t num_segments) {
+	m_num_segments = num_segments;
+
+	const float theta_by_segments = THETA / m_num_segments;
+	m_cos_theta = cosf(theta_by_segments);
+	m_sin_theta = sinf(theta_by_segments);
+}
+
+const Vec2f& Ellipse::getAxes() const {
+	return m_axes;
+}
+
+size_t Ellipse::getNumSegments() const {
+	return m_num_segments;
+}
+
 // Polygon implementation
 Polygon::Polygon(std::vector<Vec2f> points) : m_points(std::move(points)) {}
 
@@ -104,4 +131,16 @@ void Polygon::draw() const {
 	}
 
 	glEnd();
+}
+
+void Polygon::setPoints(std::vector<Vec2f> points) {
+	m_points = std::move(points);
+}
+
+const std::vector<Vec2f>& Polygon::getPoints() const {
+	return m_points;
+}
+
+std::vector<Vec2f>& Polygon::getPointsMutable() {
+	return m_points;
 }
