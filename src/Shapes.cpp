@@ -7,8 +7,8 @@ constexpr float THETA = 2 * PI;
 
 
 // Base class Shape implementation
-void Shape::setColor(float red, float green, float blue) {
-	m_color = { red, green, blue };
+void Shape::setColor(Color color) {
+	m_color = color;
 }
 
 void Shape::setPosition(Vec2f position) {

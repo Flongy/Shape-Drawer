@@ -18,7 +18,7 @@ class Shape
 public:
 	virtual void draw() const = 0;
 
-	void setColor(float red, float green, float blue);
+	void setColor(Color color);
 	void setPosition(Vec2f position);
 	void moveBy(Vec2f move_vec);
 	void setRotation(float angle_degrees);
