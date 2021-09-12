@@ -58,32 +58,23 @@ Scene makeTestScene() {
 	poly->setPosition({ 200.0f, 200.0f });
 
 	auto tri1 = std::make_shared<Triangle>(
-		std::array
-		{
 			Vec2f{0.0f, 0.0f},
 			Vec2f{120.0f, 0.0f},
-			Vec2f{120.0f, 90.0f},
-		}
+			Vec2f{120.0f, 90.0f}
 	);
 	tri1->setPosition({ 600.0f, 300.0f });
 
 	auto tri2 = std::make_shared<Triangle>(
-		std::array
-		{
 			Vec2f{0.0f, 0.0f},
 			Vec2f{50.0f, 90.0f},
-			Vec2f{-50.0f, 90.0f},
-		}
+			Vec2f{-50.0f, 90.0f}
 	);
 	tri2->setPosition({ 800.0f, 300.0f });
 
 	auto tri3 = std::make_shared<Triangle>(
-		std::array
-		{
 			Vec2f{0.0f, 0.0f},
 			Vec2f{60.0f, 90.0f},
-			Vec2f{150.0f, 90.0f},
-		}
+			Vec2f{150.0f, 90.0f}
 	);
 	tri3->setPosition({ 850.0f, 300.0f });
 
@@ -161,12 +152,11 @@ Scene makeRandomScene(size_t number_of_each_shape, uint32_t screen_width, uint32
 	generate(polygon_generator);
 
 	auto triangle_generator = [&]() -> std::shared_ptr<Shape> {
-		std::array points{
+		return std::make_shared<Triangle>(
 			uniform_point(engine),
 			uniform_point(engine),
-			uniform_point(engine),
-		};
-		return std::make_shared<Triangle>(std::move(points));
+			uniform_point(engine)
+		);
 	};
 	generate(triangle_generator);
 #undef generate

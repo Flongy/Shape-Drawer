@@ -66,5 +66,7 @@ protected:
 class Triangle final : public Polygon
 {
 public:
-	Triangle(std::array<Vec2f, 3> points) : Polygon({ points.begin(), points.end() }) {}
+	Triangle(Vec2f point1 = { 0.0f, 0.0f }, 
+			 Vec2f point2 = { 10.0f, 30.0f }, 
+			 Vec2f point3 = { -10.0f, 30.0f }) : Polygon({ point1, point2, point3 }) {}
 };
