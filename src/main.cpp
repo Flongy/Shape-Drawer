@@ -39,19 +39,31 @@ int main(void)
 
 	setProjMatrix(INITIAL_WIDTH, INITIAL_HEIGHT);
 
-	//Scene testScene = makeTestScene();
+	Scene testScene = makeTestScene();
 	Scene randomScene = makeRandomScene(20, INITIAL_WIDTH, INITIAL_HEIGHT);
-	Scene& currentScene = randomScene;
+	Scene* currentScenePtr = &testScene;
 
 	while (!glfwWindowShouldClose(window))
 	{
 		/* RENDER BEGIN */
 		glClearColor(0.15f, 0.15f, 0.16f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		currentScene.drawScene();
-
+		currentScenePtr->drawScene();
 		/* RENDER END */
+
+		// Change the current scene with number keys
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+			currentScenePtr = &testScene;
+		}
+		else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+			randomScene = makeRandomScene(20, INITIAL_WIDTH, INITIAL_HEIGHT);
+			currentScenePtr = &randomScene;
+		}
+
+		// Close application on pressing ESCAPE button
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			glfwSetWindowShouldClose(window, GLFW_TRUE);
+		}
 
 		glfwSwapBuffers(window);
 
