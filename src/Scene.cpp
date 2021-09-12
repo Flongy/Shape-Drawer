@@ -65,9 +65,19 @@ Scene makeTestScene() {
 	square1->setColor(0.0f, 0.0f, 1.0f);
 	square1->setPosition({ 50.0f, 120.0f });
 
+	auto square2 = std::make_shared<Square>(60.0f);
+	square2->setColor(0.5f, 0.7f, 0.8f);
+	square2->setPosition({ 750.0f, 50.0f });
+	square2->setRotation(45.0f);
+
 	auto ellipse1 = std::make_shared<Ellipse>(Vec2f{ 80.0f, 50.0f });
 	ellipse1->setColor(1.0f, 1.0f, 0.0f);
 	ellipse1->setPosition({ 300.0f, 85.0f });
+
+	auto ellipse2 = std::make_shared<Ellipse>(Vec2f{ 80.0f, 50.0f });
+	ellipse2->setColor(0.5f, 0.7f, 0.8f);
+	ellipse2->setPosition({ 600.0f, 100.0f });
+	ellipse2->setRotation(60.0f);
 
 	auto circle1 = std::make_shared<Circle>(60.0f);
 	circle1->setColor(1.0f, 0.0f, 1.0f);
@@ -116,7 +126,9 @@ Scene makeTestScene() {
 		rect1,
 		rect2,
 		square1,
+		square2,
 		ellipse1,
+		ellipse2,
 		circle1,
 		polygon1,
 		triangle1,
@@ -195,8 +207,10 @@ Scene makeRandomScene(size_t number_of_each_shape, uint32_t screen_width, uint32
 	generate(triangle_generator);
 #undef generate
 
-	auto uniform_pos_x = std::uniform_real_distribution{ 0.0f, static_cast<float>(width) };
-	auto uniform_pos_y = std::uniform_real_distribution{ 0.0f, static_cast<float>(height) };
+	const auto uniform_pos_x = std::uniform_real_distribution{ 0.0f, static_cast<float>(width) };
+	const auto uniform_pos_y = std::uniform_real_distribution{ 0.0f, static_cast<float>(height) };
+
+	const auto unifrom_angle = std::uniform_real_distribution{ 0.0f, 360.0f };
 
 	auto uniform_pos_Vec2f = [uniform_pos_x, uniform_pos_y](auto engine) {
 		return Vec2f{ uniform_pos_x(engine), uniform_pos_y(engine) };
@@ -211,6 +225,7 @@ Scene makeRandomScene(size_t number_of_each_shape, uint32_t screen_width, uint32
 			uniform_color(engine),
 			uniform_color(engine)
 		);
+		sh->setRotation(unifrom_angle(engine));
 	}
 
 	return Scene{ std::move(shapes) };

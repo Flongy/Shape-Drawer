@@ -13,9 +13,11 @@ public:
 	void setColor(float red, float green, float blue);
 	void setPosition(const Vec2f& position);
 	void moveBy(const Vec2f& move_vec);
+	void setRotation(float angle_degrees);
 protected:
 	std::array<float, 3> m_color = { 1.0f, 1.0f, 1.0f };
 	Vec2f m_position;
+	float m_rotation{};
 };
 
 class Rect : public Shape 
