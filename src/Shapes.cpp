@@ -5,6 +5,15 @@
 constexpr float PI = 3.14159'26535'89793;
 constexpr float THETA = 2 * PI;
 
+// Color struct implementation
+
+void Color::use() const {
+	glColor3fv(ptr());
+}
+
+const float* Color::ptr() const {
+	return reinterpret_cast<const float*>(this);
+}
 
 // Base class Shape implementation
 void Shape::setColor(Color color) {
@@ -45,7 +54,7 @@ void Rect::draw() const {
 	glRotatef(m_rotation, 0.0f, 0.0f, 1.0f);
 
 	glBegin(GL_QUADS);
-	glColor3fv(m_color.ptr());
+	m_color.use();
 
 	glVertex2f(0.0f, 0.0f);
 	glVertex2f(m_size.x, 0.0f);
@@ -81,7 +90,7 @@ void Ellipse::draw() const {
 	
 
 	glBegin(GL_TRIANGLE_FAN);
-	glColor3fv(m_color.ptr());
+	m_color.use();
 
 	for (int i = 0; i < m_num_segments; ++i) {
 		glVertex2f(x * m_axes.x, y * m_axes.y);
@@ -124,7 +133,7 @@ void Polygon::draw() const {
 	glRotatef(m_rotation, 0.0f, 0.0f, 1.0f);
 
 	glBegin(GL_TRIANGLE_FAN);
-	glColor3fv(m_color.ptr());
+	m_color.use();
 
 	for (auto& point : m_points) {
 		glVertex2f(point.x, point.y);

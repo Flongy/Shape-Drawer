@@ -10,7 +10,9 @@ struct Color {
 	float green{};
 	float blue{};
 
-	const float* ptr() const { return reinterpret_cast<const float*>(this); }
+	void use() const;
+private:
+	const float* ptr() const;
 };
 
 class Shape
