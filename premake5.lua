@@ -20,6 +20,7 @@ workspace("Shape-Drawer")
 
 	filter "system:windows"
 		systemversion "latest"
+		defines "WINDOWS"
 
 	filter "configurations:Debug"
 		defines "DEBUG"

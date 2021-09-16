@@ -69,6 +69,8 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 
 int main()
 {
+	prepareMemoryCheck();
+
 	{
 		GLFWwindow* window;
 		if (glfwInit() == GLFW_FALSE)
@@ -156,8 +158,7 @@ int main()
 		glfwTerminate();
 	}
 
-	std::cout << "Memory used in the end:\n";
-	printMemoryUsage();
+	endMemoryDump();
 	std::cin.get();
 	return 0;
 }
